@@ -1,0 +1,74 @@
+\documentclass{demi}
+
+% ===================================
+% ==== INSERT YOUR PACKAGES HERE ====
+% ===================================
+%\usepackage[utf8]{inputenc}
+% ===================================
+
+% ======================
+% ==== Article data ====
+% ======================
+\title{<article title>}
+\setShortTitle{<article short title>}
+\setUdc{<udc>}
+%\setBibNumber{<number>} % Вычисляется автоматически, но можно установить значение вручную
+%\setMainBibCounterName{<text>}
+%\setOtherBibCounterName{<text>}
+% ======================
+
+% ======================
+% ==== Authors data ====
+% ======================
+\addAuth[<other language name>]{<main language name>}
+\address{<address>}
+%\email{<email>}
+% ----------------------
+%\addAuth[<other language name>]{<main language name>}
+%\address{<address>}
+%\email{<email>}
+% ======================
+
+% =========================
+% ==== Additional data ====
+% =========================
+%\newtheorem{theorem}{Теорема}
+% =========================
+
+\begin{document}
+	
+\maketitle
+
+\abstracts
+{%
+	<mainlang>
+}%
+{%
+	<otherlang>
+}%
+
+\keywords
+{%
+	<mainlang>
+}%
+{%
+	<otherlang>
+}%
+
+% =========================
+% ==== TEXT OF ARTICLE ====
+% =========================
+% .........................
+% .........................
+% .........................
+% .........................
+% =========================
+% this comments must be deleted
+
+\begin{thebibliography}{10}
+	
+	\bibitem{<label>} <authors names> <article title> // <journal>. <year>. <volume>. <issue>. <start page>--<end page>.
+	
+\end{thebibliography}
+
+\end{document}
