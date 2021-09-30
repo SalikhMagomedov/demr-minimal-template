@@ -2,7 +2,7 @@
 % ==== Identification ====
 % ========================
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{demi}[2019/03/18. v1.3. Class for DEMR (mathreports.ru) (authors only)]
+\ProvidesClass{demi}[2021/09/30. v1.3.1 Class for DEMR (mathreports.ru) (authors only)]
 % ========================
 
 % =================================
