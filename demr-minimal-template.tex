@@ -20,55 +20,38 @@
 % ======================
 % ==== Authors data ====
 % ======================
-\addAuth[<other language name>]{<main language name>}
-\address{<address>}
-%\email{<email>}
-% ----------------------
-%\addAuth[<other language name>]{<main language name>}
-%\address{<address>}
-%\email{<email>}
+\input{inputs/authors.tex}
 % ======================
 
 % =========================
 % ==== Additional data ====
 % =========================
-%\newtheorem{theorem}{Теорема}
+\input{inputs/additional_data.tex}
 % =========================
 
 \begin{document}
 	
 \maketitle
 
-\abstracts
-{%
-	<mainlang>
-}%
-{%
-	<otherlang>
-}%
-
-\keywords
-{%
-	<mainlang>
-}%
-{%
-	<otherlang>
-}%
+\input{inputs/abstracts.tex}
+\input{inputs/keywords.tex}
 
 % =========================
 % ==== TEXT OF ARTICLE ====
 % =========================
-% .........................
-% .........................
-% .........................
-% .........................
+\input{inputs/text.tex}
 % =========================
-% this comments must be deleted
 
-\begin{thebibliography}{10}
-	
-	\bibitem{<label>} <authors names> <article title> // <journal>. <year>. <volume>. <issue>. <start page>--<end page>.
-	
-\end{thebibliography}
+% =========================
+% ==== TEXT OF ARTICLE ====
+% =========================
+\input{inputs/text.tex}
+% =========================
+
+% =========================
+% === BIBLIOGRAPHY DATA ===
+% =========================
+\input{inputs/bibliography.tex}
+% =========================
 
 \end{document}
