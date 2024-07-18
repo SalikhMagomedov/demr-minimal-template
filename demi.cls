@@ -2,7 +2,7 @@
 % ==== Identification ====
 % ========================
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{demi}[2021/09/30. v1.3.1 Class for DEMR (mathreports.ru) (authors only)]
+\ProvidesClass{demi}[2024-07-17 Class for DEMR (mathreports.ru) (authors only)]
 % ========================
 
 % =================================
@@ -86,7 +86,7 @@
 	\RequirePackage[pagewise, mathlines]{lineno}
 	\renewcommand\linenumberfont{\normalfont\small}
 	\booltrue{revnuminline}
-	
+
 	\linenumbers
 }
 
@@ -100,14 +100,13 @@
 % ++++ RU ++++
 % ++++ MAIN ++++
 \newcommand{\mainlang@ru}{%
-	\AtEndOfClass{\main@language{russian}} % babel option
 	\set@name{Дагестанские Электронные Математические Известия}
 	\set@udcname{УДК}
 	\set@mainBibName{Библиография}
 	\set@mainBibCounterName{названий}
 	\set@mainkeywordsname{Ключевые слова}
 	\set@otherauthorsstrng{и др.}
-	
+
 	\renewcommand{\auto@main@bibcountertext}[1]{\auto@bibcountertext@ru{##1}}
 }
 % ++++ OTHER ++++
@@ -115,47 +114,46 @@
 	\set@otherBibName{Библиография}
 	\set@otherBibCounterName{названий}
 	\set@otherkeywordsname{Ключевые слова}
-	
+
 	\renewcommand{\auto@other@bibcountertext}[1]{\auto@bibcountertext@ru{##1}}
 }
 % ++++ BIB COUNTER TEXT ++++
 \newcommand{\auto@bibcountertext@ru}[1]{%
-\ifthenelse{%
-	\intcalcMod{#1}{100} > 10%
-	\and%
-	\intcalcMod{#1}{100} < 20%
-}{%
-	названий%
-}{%
 	\ifthenelse{%
-		\intcalcMod{#1}{10} = 1%
+		\intcalcMod{#1}{100} > 10%
+		\and%
+		\intcalcMod{#1}{100} < 20%
 	}{%
-		название%
+		названий%
 	}{%
 		\ifthenelse{%
-			\intcalcMod{#1}{10} > 1%
-			\and%
-			\intcalcMod{#1}{10} < 5%
+			\intcalcMod{#1}{10} = 1%
 		}{%
-			названия%
+			название%
 		}{%
-			названий%
+			\ifthenelse{%
+				\intcalcMod{#1}{10} > 1%
+				\and%
+				\intcalcMod{#1}{10} < 5%
+			}{%
+				названия%
+			}{%
+				названий%
+			}%
 		}%
 	}%
-}%
 }%
 
 % ++++ EN ++++
 % ++++ MAIN ++++
 \newcommand{\mainlang@en}{%
-	\AtEndOfClass{\main@language{english}} % babel option
 	\set@name{Daghestan Electronic Mathematical Reports}
 	\set@udcname{UDC}
 	\set@mainBibName{Bibliography}
 	\set@mainBibCounterName{items}
 	\set@mainkeywordsname{Keywords}
 	\set@otherauthorsstrng{and others}
-	
+
 	\renewcommand{\auto@main@bibcountertext}[1]{\auto@bibcountertext@en{##1}}
 }
 % ++++ OTHER ++++
@@ -163,56 +161,73 @@
 	\set@otherBibName{Bibliography}
 	\set@otherBibCounterName{items}
 	\set@otherkeywordsname{Keywords}
-	
+
 	\renewcommand{\auto@other@bibcountertext}[1]{\auto@bibcountertext@en{##1}}
 }
 % ++++ BIB COUNTER TEXT ++++
 \newcommand{\auto@bibcountertext@en}[1]{%
-\ifthenelse{%
-	#1 = 1
-}{%
-	item%
-}{%
-	items%
-}%
+	\ifthenelse{%
+		#1 = 1
+	}{%
+		item%
+	}{%
+		items%
+	}%
 }%
 
 % Base class
-\LoadClass[twoside, 14pt]{extarticle}
+\LoadClass[twoside, 12pt]{article}
 
 % Required Packages
 %\RequirePackage[utf8]{inputenc}
 % For named options
 \RequirePackage{pgfkeys}
-	\pgfkeys{
-		/demr/.cd,
-			mainlang/.is choice, % option for main language
-			mainlang/ru/.code={\mainlang@ru},
-			mainlang/en/.code={\mainlang@en},
-			otherlang/.is choice, % option for other language
-			otherlang/ru/.code={\otherlang@ru},
-			otherlang/en/.code={\otherlang@en},
-			revtext/.code=\set@revtext{#1}, % setting watermark text
-			revnumstyle/.is choice, % option for changing string numbers style
-			revnumstyle/absolut/.code={\renewcommand{\revnum}{\@revnumabsolut}},%
-			revnumstyle/inline/.code={\renewcommand{\revnum}{\@revnuminline}},%
-	}
+\pgfkeys{
+	/demr/.cd,
+	mainlang/.is choice, % option for main language
+	mainlang/ru/.code={\mainlang@ru},
+	mainlang/en/.code={\mainlang@en},
+	otherlang/.is choice, % option for other language
+	otherlang/ru/.code={\otherlang@ru},
+	otherlang/en/.code={\otherlang@en},
+	revtext/.code=\set@revtext{#1}, % setting watermark text
+	revnumstyle/.is choice, % option for changing string numbers style
+	revnumstyle/absolut/.code={\renewcommand{\revnum}{\@revnumabsolut}},%
+	revnumstyle/inline/.code={\renewcommand{\revnum}{\@revnuminline}},%
+}
 % Applying named options to class
 \RequirePackage{pgfopts}
-	\ProcessPgfOptions{/demr}
-\RequirePackage[T1,T2A]{fontenc} % For Cyrillic font encoding
-\RequirePackage[english,russian]{babel} % For typographical rules
+\ProcessPgfOptions{/demr}
+
+% LuaLaTeX packages
+\RequirePackage{fontspec}
+\setmainfont{Times New Roman}
+\setmonofont{Consolas}
+\RequirePackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+
+\RequirePackage[
+	a4paper,
+	left=20mm,
+	right=20mm,
+	top=30mm,
+	bottom=20mm,
+	headheight=10mm,
+	footheight=5mm
+]{geometry}
+
 \RequirePackage{fancyhdr} % Page stylizing
 \RequirePackage[explicit]{titlesec} % Title formatting (sections and subsections)
 \RequirePackage{etoolbox} % Using commands in this class
-	\newbool{rev} % Is this article for reviewers?
-	\newbool{mainlangonly} % True if only one language
-	\newbool{digsig} % Setting op at the end of ducument signature field (experimental feature)
-	\newbool{manualbibnum} % true when used \setBibNumber
-	\newbool{manualbibtextmain}  % true when used \setMainBibCounterName
-	\newbool{manualbibtextother} % true when used \setOtherBibCounterName
-	\newbool{revnuminsert} % true when revnumstyle=absolut
-	\newbool{revnuminline} % true when revnumstyle=inline
+\newbool{rev} % Is this article for reviewers?
+\newbool{mainlangonly} % True if only one language
+\newbool{digsig} % Setting op at the end of ducument signature field (experimental feature)
+\newbool{manualbibnum} % true when used \setBibNumber
+\newbool{manualbibtextmain}  % true when used \setMainBibCounterName
+\newbool{manualbibtextother} % true when used \setOtherBibCounterName
+\newbool{revnuminsert} % true when revnumstyle=absolut
+\newbool{revnuminline} % true when revnumstyle=inline
 \RequirePackage{hyperref} % Coloring refs
 \RequirePackage{amsthm} % Define theoremstyles
 \RequirePackage{titletoc} % Add section* and subsection* to ToC
@@ -271,14 +286,14 @@
 \newcommand{\abstracts}[2]{%
 	\begin{quotation}
 		#1
-		
+
 		\get@mainBibData
 		\ifbool{mainlangonly}{}{%
-			
+
 			\null
-			
+
 			#2
-			
+
 			\get@otherBibData
 		}
 	\end{quotation}%
@@ -290,7 +305,7 @@
 		\textbf{\get@mainkeywordsname:}
 		#1
 		\ifbool{mainlangonly}{}{%
-			
+
 			\textbf{\get@otherkeywordsname:}
 			#2
 		}
@@ -320,9 +335,9 @@
 \newcommand{\auth@names}{%
 	\setcounter{idx}{0}%
 	\loop%
-		\stepcounter{idx}%
-		\csuse{auth@mainname\theidx}%
-		\ifnumless{\theidx}{\theauthcount}{, }{}%
+	\stepcounter{idx}%
+	\csuse{auth@mainname\theidx}%
+	\ifnumless{\theidx}{\theauthcount}{, }{}%
 	\ifnum \theidx < \theauthcount
 	\repeat
 }%
@@ -331,26 +346,17 @@
 \newcommand{\auth@data}{%
 	\setcounter{idx}{0}%
 	\loop%
-		\stepcounter{idx}%
-		\textbf{\csuse{auth@mainname\theidx} \ifcsempty{auth@othername\theidx}{}{\ifbool{mainlangonly}{}{(\csuse{auth@othername\theidx})}}}\par\noindent%
-		\csuse{auth@address\theidx}\par\noindent%
-		\ifcsempty{auth@email\theidx}{}{\textit{E-mail:} \href{mailto:\csuse{auth@email\theidx}}{\csuse{auth@email\theidx}}\par\noindent}%
-		\ifnumless{\theidx}{\theauthcount}{\vskip 0.5em}{}\noindent%
+	\stepcounter{idx}%
+	\textbf{\csuse{auth@mainname\theidx} \ifcsempty{auth@othername\theidx}{}{\ifbool{mainlangonly}{}{(\csuse{auth@othername\theidx})}}}\par\noindent%
+	\csuse{auth@address\theidx}\par\noindent%
+	\ifcsempty{auth@email\theidx}{}{\textit{E-mail:} \href{mailto:\csuse{auth@email\theidx}}{\csuse{auth@email\theidx}}\par\noindent}%
+	\ifnumless{\theidx}{\theauthcount}{\vskip 0.5em}{}\noindent%
 	\ifnum \theidx < \theauthcount
 	\repeat
 }%
 
 % show one author if authcount >= 4
 \newcommand{\auth@shortnames}{\ifnumless{\theauthcount}{4}{\auth@names}{\csuse{auth@mainname1} \get@otherauthorsstrng}}
-
-% Page settings
-\voffset = -0.75in 
-\hoffset = 0in 
-\oddsidemargin = 0pt 
-\evensidemargin = 0pt
-\headheight = 14.5pt
-\textheight = 8.69in
-\textwidth = 6.27in
 
 % setup ref colors
 \hypersetup{
@@ -366,35 +372,35 @@
 
 % settings for plain theorem style
 \newtheoremstyle{plain}% stylename
-	{5pt}% space above
-	{5pt}% space below
-	{\itshape}% bodyfont
-	{\parindent}% indentamt
-	{\scshape}% headfont
-	{.}% headpunct
-	{.5em}% headspace
-	{}% headspec
+{5pt}% space above
+{5pt}% space below
+{\itshape}% bodyfont
+{\parindent}% indentamt
+{\scshape}% headfont
+{.}% headpunct
+{.5em}% headspace
+{}% headspec
 %
 
 % settings for definition theorem style
 \newtheoremstyle{definition}% stylename
-	{5pt}% space above
-	{5pt}% space below
-	{\upshape}% bodyfont
-	{\parindent}% indentamt
-	{\scshape}% headfont
-	{.}% headpunct
-	{.5em}% headspace
-	{}% headspec
+{5pt}% space above
+{5pt}% space below
+{\upshape}% bodyfont
+{\parindent}% indentamt
+{\scshape}% headfont
+{.}% headpunct
+{.5em}% headspace
+{}% headspec
 %
-	
+
 % settings for proof style	
 \renewenvironment{proof}[1][\proofname]
-	{\par%
+{\par%
 	\pushQED{\qed}%
 	\normalfont{\scshape #1\@addpunct{.}}%
 	\hspace\labelsep\ignorespaces}%
-	{\popQED\endtrivlist\@endpefalse}
+{\popQED\endtrivlist\@endpefalse}
 %
 
 % autosetting bibNumber
@@ -428,40 +434,40 @@
 \ifbool{rev}{%
 	\RequirePackage[printwatermark]{xwatermark} % Create watermark (for review only)
 	\RequirePackage{xcolor} % Colors
-	
+
 	% Creating watermark
 	\newwatermark[allpages, color=blue!10, angle=-45, scale=2, xpos=0, ypos=0]{\get@revtext}
-	
+
 	% Creating line numbers
 	\revnum
 }
 
 % amsmath package support with 'revnumstyle=inline' option
 \ifbool{revnuminline}{%
-\AtBeginDocument{
-	\newcommand*\linenomathpatchAMS[1]{%
-		\expandafter\pretocmd\csname #1\endcsname {\linenomathAMS}{}{}%
-		\expandafter\pretocmd\csname #1*\endcsname{\linenomathAMS}{}{}%
-		\expandafter\apptocmd\csname end#1\endcsname {\endlinenomath}{}{}%
-		\expandafter\apptocmd\csname end#1*\endcsname{\endlinenomath}{}{}%
+	\AtBeginDocument{
+		\newcommand*\linenomathpatchAMS[1]{%
+			\expandafter\pretocmd\csname #1\endcsname {\linenomathAMS}{}{}%
+			\expandafter\pretocmd\csname #1*\endcsname{\linenomathAMS}{}{}%
+			\expandafter\apptocmd\csname end#1\endcsname {\endlinenomath}{}{}%
+			\expandafter\apptocmd\csname end#1*\endcsname{\endlinenomath}{}{}%
+		}
+
+		%% Definition of \linenomathAMS depends on whether the mathlines option is provided
+		\expandafter\ifx\linenomath\linenomathWithnumbers
+			\let\linenomathAMS\linenomathWithnumbers
+			%% The following line gets rid of an extra line numbers at the bottom:
+			\patchcmd\linenomathAMS{\advance\postdisplaypenalty\linenopenalty}{}{}{}
+		\else
+			\let\linenomathAMS\linenomathNonumbers
+		\fi
+
+		\linenomathpatchAMS{equation} %% <- unnecessary, equation is already patched
+		\linenomathpatchAMS{gather}
+		\linenomathpatchAMS{multline}
+		\linenomathpatchAMS{align}
+		\linenomathpatchAMS{alignat}
+		\linenomathpatchAMS{flalign}
 	}
-	
-	%% Definition of \linenomathAMS depends on whether the mathlines option is provided
-	\expandafter\ifx\linenomath\linenomathWithnumbers
-	\let\linenomathAMS\linenomathWithnumbers
-	%% The following line gets rid of an extra line numbers at the bottom:
-	\patchcmd\linenomathAMS{\advance\postdisplaypenalty\linenopenalty}{}{}{}
-	\else
-	\let\linenomathAMS\linenomathNonumbers
-	\fi
-	
-	\linenomathpatchAMS{equation} %% <- unnecessary, equation is already patched
-	\linenomathpatchAMS{gather}
-	\linenomathpatchAMS{multline}
-	\linenomathpatchAMS{align}
-	\linenomathpatchAMS{alignat}
-	\linenomathpatchAMS{flalign}
-}
 }{}
 
 % set style for all pages
@@ -486,11 +492,11 @@
 \fancypagestyle{plain}{
 	\fancyhf{}
 	\ifbool{revnuminsert}
-		{\lhead{}%
-			\begin{picture}(0,0)%
-				\put(-26,-50){\usebox{\@linebox}}%
-			\end{picture}}
-		{\lhead{}}
+	{\lhead{}%
+		\begin{picture}(0,0)%
+			\put(-26,-50){\usebox{\@linebox}}%
+		\end{picture}}
+	{\lhead{}}
 	\chead{\small\get@name}
 	\rhead{}
 	\rfoot{\small\copyright \quad \auth@shortnames}
@@ -511,33 +517,33 @@
 
 % setup \section{title} style
 \titleformat{\section} % command
-	{\centering\large\normalfont\bfseries} % format
-	{\thesection.} % label
-	{0.5em} % separation
-	{#1} % before code
+{\centering\large\normalfont\bfseries} % format
+{\thesection.} % label
+{0.5em} % separation
+{#1} % before code
 %
 % setup \section*{title} style
 \titleformat{name = \section, numberless} % command
-	{\centering\large\normalfont\bfseries} % format
-	{} % label
-	{0.5em} % separation
-	{#1} % before code
-	[\addcontentsline{toc}{section}{#1}] % after code
+{\centering\large\normalfont\bfseries} % format
+{} % label
+{0.5em} % separation
+{#1} % before code
+[\addcontentsline{toc}{section}{#1}] % after code
 %
 % setup \subsection{title} style
 \titleformat{\subsection} % command
-	{\centering\normalfont\bfseries} % format
-	{\thesubsection.} % label
-	{0.5em} % separation
-	{#1} % before code
+{\centering\normalfont\bfseries} % format
+{\thesubsection.} % label
+{0.5em} % separation
+{#1} % before code
 %
 % setup \subsection*{title} style
 \titleformat{name = \subsection, numberless} % command
-	{\centering\normalfont\bfseries} % format
-	{} % label
-	{0.5em} % separation
-	{#1} % before code
-	[\addcontentsline{toc}{subsection}{#1}] % after code
+{\centering\normalfont\bfseries} % format
+{} % label
+{0.5em} % separation
+{#1} % before code
+[\addcontentsline{toc}{subsection}{#1}] % after code
 %
 
 % setup thebibliography style
@@ -554,7 +560,7 @@
 \AfterEndEnvironment{thebibliography}{%
 	\ifbool{rev}{}{%
 		\vskip1.5em%
-				\small\auth@data
+		\small\auth@data
 		\ifbool{digsig}{%
 			\sigField{mySig}{3in}{4\baselineskip}
 		}{}
