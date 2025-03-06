@@ -214,7 +214,7 @@
 	top=30mm,
 	bottom=20mm,
 	headheight=10mm,
-	footheight=5mm
+	footskip=5mm
 ]{geometry}
 
 \RequirePackage{fancyhdr} % Page stylizing
